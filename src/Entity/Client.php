@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\Salutation;
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -48,9 +50,16 @@ class Client
     #[ORM\Column(type: Types::BOOLEAN)]
     private ?bool $hasAcceptedPolicies = false;
 
+    /**
+     * @var Collection<int, Work>
+     */
+    #[ORM\OneToMany(targetEntity: Work::class, mappedBy: 'client')]
+    private Collection $works;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->works = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +195,36 @@ class Client
     public function setHasAcceptedPolicies(bool $hasAcceptedPolicies): static
     {
         $this->hasAcceptedPolicies = $hasAcceptedPolicies;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Work>
+     */
+    public function getWorks(): Collection
+    {
+        return $this->works;
+    }
+
+    public function addWork(Work $work): static
+    {
+        if (!$this->works->contains($work)) {
+            $this->works->add($work);
+            $work->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWork(Work $work): static
+    {
+        if ($this->works->removeElement($work)) {
+            // set the owning side to null (unless already changed)
+            if ($work->getClient() === $this) {
+                $work->setClient(null);
+            }
+        }
 
         return $this;
     }

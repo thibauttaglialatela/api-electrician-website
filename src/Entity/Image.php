@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\ImageUsage;
 use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
@@ -28,6 +30,27 @@ class Image
 
     #[ORM\Column(enumType: ImageUsage::class)]
     private ?ImageUsage $usage = null;
+
+    #[ORM\OneToOne(mappedBy: 'image')]
+    private ?Certification $certification = null;
+
+    #[ORM\OneToOne(mappedBy: 'image')]
+    private ?Prestation $prestation = null;
+
+    /**
+     * @var Collection<int, Partner>
+     */
+    #[ORM\OneToMany(targetEntity: Partner::class, mappedBy: 'image')]
+    private Collection $partners;
+
+    #[ORM\ManyToOne(inversedBy: 'illustrations')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "CASCADE")]
+    private ?Work $work = null;
+
+    public function __construct()
+    {
+        $this->partners = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,4 +116,47 @@ class Image
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Partner>
+     */
+    public function getPartners(): Collection
+    {
+        return $this->partners;
+    }
+
+    public function addPartner(Partner $partner): static
+    {
+        if (!$this->partners->contains($partner)) {
+            $this->partners->add($partner);
+            $partner->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePartner(Partner $partner): static
+    {
+        if ($this->partners->removeElement($partner)) {
+            // set the owning side to null (unless already changed)
+            if ($partner->getImage() === $this) {
+                $partner->setImage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getWork(): ?Work
+    {
+        return $this->work;
+    }
+
+    public function setWork(?Work $work): static
+    {
+        $this->work = $work;
+
+        return $this;
+    }
+
 }

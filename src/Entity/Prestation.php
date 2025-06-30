@@ -26,6 +26,10 @@ class Prestation
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'], inversedBy: 'prestation')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?Image $Image = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -80,6 +84,18 @@ class Prestation
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->Image;
+    }
+
+    public function setImage(?Image $Image): static
+    {
+        $this->Image = $Image;
 
         return $this;
     }
