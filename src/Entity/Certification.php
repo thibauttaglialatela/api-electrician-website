@@ -22,6 +22,10 @@ class Certification
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expiresAt = null;
 
+    #[ORM\OneToOne(inversedBy: 'certification', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?Image $image = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Certification
     public function setExpiresAt(?\DateTimeImmutable $expiresAt): static
     {
         $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
