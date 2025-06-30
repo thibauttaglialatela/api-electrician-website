@@ -15,19 +15,19 @@ class Review
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    private string $message;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $note = null;
+    private int $note;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $CreatedAt = null;
+    private \DateTimeImmutable $CreatedAt;
 
     #[ORM\Column(length: 50)]
-    private ?string $firstname = null;
+    private string $firstname;
 
     #[ORM\Column(length: 50)]
-    private ?string $lastname = null;
+    private string $lastname;
 
     public function __construct()
     {

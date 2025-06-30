@@ -14,17 +14,17 @@ class Certification
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $issuedAt = null;
+    private \DateTimeImmutable $issuedAt;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expiresAt = null;
 
     #[ORM\OneToOne(inversedBy: 'certification', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
-    private ?Image $image = null;
+    private Image $image;
 
     public function getId(): ?int
     {
@@ -72,7 +72,7 @@ class Certification
         return $this->image;
     }
 
-    public function setImage(?Image $image): static
+    public function setImage(Image $image): static
     {
         $this->image = $image;
 
