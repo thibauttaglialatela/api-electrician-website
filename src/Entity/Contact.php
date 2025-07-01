@@ -16,22 +16,22 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $lastname = null;
+    private string $lastname;
 
     #[ORM\Column(length: 250)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(enumType: SubjectMessage::class)]
-    private ?SubjectMessage $subject = SubjectMessage::INFOS;
+    private SubjectMessage $subject = SubjectMessage::INFOS;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    private string $message;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column]
-    private ?bool $hasAcceptedPolicies = false;
+    private bool $hasAcceptedPolicies = false;
 
     public function __construct()
     {

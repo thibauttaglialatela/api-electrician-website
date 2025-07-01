@@ -17,19 +17,19 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
-    private ?string $url = null;
+    private string $url;
 
     #[ORM\Column(length: 50)]
-    private ?string $alt = null;
+    private string $alt;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(enumType: ImageUsage::class)]
-    private ?ImageUsage $usage = null;
+    private ImageUsage $usage;
 
     #[ORM\OneToOne(mappedBy: 'image')]
     private ?Certification $certification = null;

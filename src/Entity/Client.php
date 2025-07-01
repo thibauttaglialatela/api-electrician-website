@@ -24,13 +24,13 @@ class Client
     private ?Salutation $Salutation = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $firstname = null;
+    private string $firstname;
 
     #[ORM\Column(length: 50)]
-    private ?string $lastname = null;
+    private string $lastname;
 
     #[ORM\Column(length: 250)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phone = null;
@@ -45,10 +45,10 @@ class Client
     private ?string $city = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private ?bool $hasAcceptedPolicies = false;
+    private bool $hasAcceptedPolicies = false;
 
     /**
      * @var Collection<int, Work>

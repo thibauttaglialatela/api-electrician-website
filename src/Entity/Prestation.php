@@ -15,20 +15,20 @@ class Prestation
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
-    private ?int $price = null;
+    private int $price;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'], inversedBy: 'prestation')]
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
-    private ?Image $Image = null;
+    private Image $Image;
 
     public function __construct()
     {
@@ -93,7 +93,7 @@ class Prestation
         return $this->Image;
     }
 
-    public function setImage(?Image $Image): static
+    public function setImage(Image $Image): static
     {
         $this->Image = $Image;
 

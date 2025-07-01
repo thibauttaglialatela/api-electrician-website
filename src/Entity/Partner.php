@@ -14,7 +14,7 @@ class Partner
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 250, nullable: true)]
     private ?string $websiteUrl = null;
