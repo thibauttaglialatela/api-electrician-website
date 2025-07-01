@@ -31,7 +31,7 @@ class Image
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(enumType: ImageUsage::class)]
-    private ImageUsage $usage;
+    private ImageUsage $usageType;
 
     #[ORM\OneToOne(mappedBy: 'image')]
     private ?Certification $certification = null;
@@ -51,7 +51,8 @@ class Image
 
     public function __construct()
     {
-        $this->partners = new ArrayCollection();
+        $this->partners  = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -107,14 +108,14 @@ class Image
         return $this;
     }
 
-    public function getUsage(): ?ImageUsage
+    public function getUsageType(): ?ImageUsage
     {
-        return $this->usage;
+        return $this->usageType;
     }
 
-    public function setUsage(ImageUsage $usage): static
+    public function setUsageType(ImageUsage $usageType): static
     {
-        $this->usage = $usage;
+        $this->usageType = $usageType;
 
         return $this;
     }
