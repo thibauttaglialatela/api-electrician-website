@@ -6,7 +6,7 @@ namespace App\Enum;
 
 enum Salutation: string
 {
-    case MR = 'M.';
-    case MRS = 'Mme.';
+    case MR      = 'M.';
+    case MRS     = 'Mme.';
     case SOCIETY = 'Entreprise';
 }

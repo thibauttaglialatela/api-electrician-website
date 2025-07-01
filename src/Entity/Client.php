@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\Salutation;
@@ -59,7 +61,7 @@ class Client
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->works = new ArrayCollection();
+        $this->works     = new ArrayCollection();
     }
 
     public function getId(): ?int

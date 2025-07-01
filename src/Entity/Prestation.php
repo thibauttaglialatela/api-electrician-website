@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PrestationRepository;
@@ -27,7 +29,7 @@ class Prestation
     private \DateTimeImmutable $createdAt;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'], inversedBy: 'prestation')]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Image $Image;
 
     public function __construct()

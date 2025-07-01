@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CertificationRepository;
@@ -23,7 +25,7 @@ class Certification
     private ?\DateTimeImmutable $expiresAt = null;
 
     #[ORM\OneToOne(inversedBy: 'certification', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Image $image;
 
     public function getId(): ?int
