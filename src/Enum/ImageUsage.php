@@ -6,8 +6,8 @@ namespace App\Enum;
 
 enum ImageUsage: string
 {
-    case WORK = 'Chantier';
+    case WORK          = 'Chantier';
     case CERTIFICATION = 'Certification';
-    case PRESTATION = 'Prestation';
-    case PARTNER = 'Partenaire';
+    case PRESTATION    = 'Prestation';
+    case PARTNER       = 'Partenaire';
 }

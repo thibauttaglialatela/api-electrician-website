@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\ImageUsage;
@@ -44,7 +46,7 @@ class Image
     private Collection $partners;
 
     #[ORM\ManyToOne(inversedBy: 'illustrations')]
-    #[ORM\JoinColumn(nullable: true, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Work $work = null;
 
     public function __construct()
@@ -158,5 +160,4 @@ class Image
 
         return $this;
     }
-
 }
