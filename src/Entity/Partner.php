@@ -21,7 +21,7 @@ class Partner
     #[ORM\Column(length: 250, nullable: true)]
     private ?string $websiteUrl = null;
 
-    #[ORM\ManyToOne(inversedBy: 'partners')]
+    #[ORM\ManyToOne(inversedBy: 'partners', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Image $image = null;
 
