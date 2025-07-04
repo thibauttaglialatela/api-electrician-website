@@ -9,6 +9,7 @@ use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -19,9 +20,11 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
+    #[Groups('certification:read')]
     private string $url;
 
     #[ORM\Column(length: 50)]
+    #[Groups('certification:read')]
     private string $alt;
 
     #[ORM\Column]
@@ -158,6 +161,30 @@ class Image
     public function setWork(?Work $work): static
     {
         $this->work = $work;
+
+        return $this;
+    }
+
+    public function getCertification(): ?Certification
+    {
+        return $this->certification;
+    }
+
+    public function setCertification(?Certification $certification): static
+    {
+        $this->certification = $certification;
+
+        return $this;
+    }
+
+    public function getPrestation(): ?Prestation
+    {
+        return $this->prestation;
+    }
+
+    public function setPrestation(?Prestation $prestation): static
+    {
+        $this->prestation = $prestation;
 
         return $this;
     }
