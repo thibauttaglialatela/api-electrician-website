@@ -19,7 +19,7 @@ final class CertificationController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (!$valid && (!$user || !in_array('ROLE_ADMIN', $user->getRoles(), true))) {
+        if (!$valid && (!$user || !\in_array('ROLE_ADMIN', $user->getRoles(), true))) {
             return $this->json([
                 'error' => 'Accès non autorisé à la liste complète des certifications',
             ], JsonResponse::HTTP_FORBIDDEN);

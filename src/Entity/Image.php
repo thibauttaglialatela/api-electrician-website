@@ -20,11 +20,11 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
-    #[Groups('certification:read')]
+    #[Groups(['certification:read', 'prestations:list'])]
     private string $url;
 
     #[ORM\Column(length: 50)]
-    #[Groups('certification:read')]
+    #[Groups(['certification:read', 'prestations:list'])]
     private string $alt;
 
     #[ORM\Column]
