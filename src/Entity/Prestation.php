@@ -30,7 +30,7 @@ class Prestation
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'], inversedBy: 'prestation')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Image $Image;
+    private Image $image;
 
     public function __construct()
     {
@@ -92,12 +92,12 @@ class Prestation
 
     public function getImage(): ?Image
     {
-        return $this->Image;
+        return $this->image;
     }
 
-    public function setImage(Image $Image): static
+    public function setImage(Image $image): static
     {
-        $this->Image = $Image;
+        $this->image = $image;
 
         return $this;
     }

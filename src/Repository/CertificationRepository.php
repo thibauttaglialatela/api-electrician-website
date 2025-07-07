@@ -18,6 +18,23 @@ class CertificationRepository extends ServiceEntityRepository
         parent::__construct($registry, Certification::class);
     }
 
+    /**
+     * @return Certification[]
+     */
+    public function findAllValidCertifications(): array
+    {
+        /** @var Certification[] $results */
+        $results = $this->createQueryBuilder('c')
+            ->where('c.expiresAt > :today')
+            ->orWhere('c.expiresAt IS NULL')
+            ->setParameter('today', new \DateTimeImmutable('today'))
+            ->orderBy('c.expiresAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
     //    /**
     //     * @return Certification[] Returns an array of Certification objects
     //     */
