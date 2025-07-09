@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WorkRepository::class)]
 class Work
@@ -16,6 +17,7 @@ class Work
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['work:list'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -25,12 +27,14 @@ class Work
     private \DateTimeImmutable $startDate;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['work:list'])]
     private ?\DateTimeImmutable $endDate = null;
 
     /**
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'work')]
+    #[Groups(['work:list'])]
     private Collection $illustrations;
 
     #[ORM\ManyToOne(inversedBy: 'works')]
