@@ -12,7 +12,7 @@ Ce projet expose une API RESTful permettant d’alimenter un site vitrine pour u
 - [4. Endpoints Admin](#4-endpoints-admin)
 - [5. Réponses JSON - Frontend](#5-réponses-json---frontend)
 - [6. Réponses JSON - Admin](#6-réponses-json---admin)
-- [7. Gestion des erreurs]
+- [7. Gestion des erreurs](#7-gestion-erreurs)
 ---
 
 ## 1. Présentation de l'API
@@ -42,7 +42,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 |---------|-------------------------------|-----------------------------------------|
 | GET     | `/api/prestations`           | Liste des prestations                    |
 | GET     | `/api/prestations/:id`       | Détail d'une prestation                  |
-| GET     | `/api/works?limit=3`         | Derniers chantiers                       |
+| GET     | `/api/works?limit=3&sort=end_date`         | Derniers chantiers                       |
 | GET     | `/api/works/:id`             | Détail d’un chantier                     |
 | GET     | `/api/certifications`        | Liste des certifications valides        |
 | GET     | `/api/partners`              | Logos + liens des partenaires           |
@@ -306,7 +306,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 }
 ```
 
-## 7. Gestion des erreurs
+## 7. Gestion des erreurs 
 
 ### 400 - Bad request
 
