@@ -20,11 +20,11 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
-    #[Groups(['certification:read', 'prestations:list', 'work:list'])]
+    #[Groups(['certification:read', 'prestations:list'])]
     private string $url;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['certification:read', 'prestations:list', 'work:list'])]
+    #[Groups(['certification:read', 'prestations:list'])]
     private string $alt;
 
     #[ORM\Column]
@@ -34,7 +34,6 @@ class Image
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(enumType: ImageUsage::class)]
-    #[Groups(['work:list'])]
     private ImageUsage $usageType;
 
     #[ORM\OneToOne(mappedBy: 'image')]
