@@ -20,7 +20,15 @@ class WorkRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * Undocumented function.
+     *
+     * @return array<int, array{
+     * work_id: int,
+     * display_name: string,
+     * endDate: \DateTimeImmutable,
+     * image_url: string,
+     * image_alt: string,
+     * }>
      */
     public function findLastThreeWorks(int $limit, string $sortField): array
     {
@@ -46,7 +54,7 @@ class WorkRepository extends ServiceEntityRepository
         ;
 
 
-        /** @var array<int, array<string, mixed>> $result */
+        /** @var array<int, array{work_id: int, display_name: string, endDate: \DateTimeImmutable, image_url: string, image_alt: string}> */
         $result = $qb->getQuery()->getArrayResult();
 
         return $result;

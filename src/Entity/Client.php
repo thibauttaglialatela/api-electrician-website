@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -21,18 +20,15 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['work:list'])]
     private ?string $companyName = null;
 
     #[ORM\Column(nullable: true, enumType: Salutation::class)]
     private ?Salutation $Salutation = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['work:list'])]
     private string $firstname;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['work:list'])]
     private string $lastname;
 
     #[ORM\Column(length: 250)]

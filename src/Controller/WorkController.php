@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\Work\ClientDto;
+use App\Dto\Work\ImageDto;
+use App\Dto\Work\LastWorkListDto;
 use App\Repository\WorkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +28,6 @@ final class WorkController extends AbstractController
 
         $works = $workRepository->findLastThreeWorks($limit, $sort);
 
-
         if (empty($works)) {
             return $this->json([
                 'Chantiers' => [],
@@ -33,8 +35,18 @@ final class WorkController extends AbstractController
             ]);
         }
 
-        $jsonWorkList = $serializer->serialize($works, 'json', ['groups' => 'work:list']);
 
-        return JsonResponse::fromJsonString($jsonWorkList);
+
+        $dto = array_map(function (array $works): LastWorkListDto {
+            return new LastWorkListDto(
+                $works['work_id'],
+                new ClientDto($works['display_name']),
+                date_format($works['endDate'], 'd/m/Y'),
+                new ImageDto($works['image_url'], $works['image_alt'])
+            );
+        }, $works);
+
+
+        return $this->json($dto);
     }
 }
