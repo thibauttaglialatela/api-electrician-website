@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Dto\Work;
+namespace App\Dto\Certification;
 
-use App\Dto\ClientDto;
 use App\Dto\ImageDto;
 
-final class LastWorkListDto
+final class CertificationDto
 {
     public function __construct(
         public readonly int $id,
-        public readonly ClientDto $client,
-        public readonly string $endDate,
+        public readonly string $name,
         public readonly ImageDto $image,
     ) {
     }

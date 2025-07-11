@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\Certification\CertificationDto;
+use App\Entity\Certification;
+use App\Dto\ImageDto;
 use App\Repository\CertificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +28,7 @@ final class CertificationController extends AbstractController
             ], JsonResponse::HTTP_FORBIDDEN);
         }
 
+        /** @var array<Certification> $certifications */
         $certifications = $valid
             ? $certificationRepository->findAllValidCertifications()
             : $certificationRepository->findAll();
@@ -36,8 +40,17 @@ final class CertificationController extends AbstractController
             ]);
         }
 
-        $jsonContent = $serializer->serialize($certifications, 'json', ['groups' => ['certification:read', 'image:read']]);
+        /** @var array<int, array{id: int, name: string, image_url: string, image_alt: string}> $certifications */
+        $validCertifications = array_map(function (array $certifications): CertificationDto {
+            return new CertificationDto(
+                $certifications['id'],
+                $certifications['name'],
+                new ImageDto($certifications['image_url'], $certifications['image_alt'])
+            );
+        }, $certifications);
 
-        return JsonResponse::fromJsonString($jsonContent);
+
+
+        return $this->json($validCertifications);
     }
 }
