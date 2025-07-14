@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Dto\Work;
+namespace App\Dto;
 
 final class ClientDto
 {

@@ -19,18 +19,20 @@ class CertificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Certification[]
+     * @return list<array{id: int, name: string, image_url: string, image_alt: string}>
      */
     public function findAllValidCertifications(): array
     {
-        /** @var Certification[] $results */
-        $results = $this->createQueryBuilder('c')
-            ->where('c.expiresAt > :today')
-            ->orWhere('c.expiresAt IS NULL')
-            ->setParameter('today', new \DateTimeImmutable('today'))
-            ->orderBy('c.expiresAt', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT certification.id id,certification.name name, image.url image_url, image.alt image_alt FROM certification
+        LEFT JOIN image ON certification.image_id = image.id
+        WHERE (certification.expires_at < :today OR certification.expires_at IS NULL);';
+        $today     = new \DateTimeImmutable();
+        $resultSet = $conn->executeQuery($sql, ['today' => $today->format('Y-m-d H:i:s')]);
+
+        /** @var list<array{id: int, name: string, image_url: string, image_alt: string}> $results */
+        $results = $resultSet->fetchAllAssociative();
 
         return $results;
     }
