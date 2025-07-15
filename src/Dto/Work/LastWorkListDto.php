@@ -12,7 +12,7 @@ final class LastWorkListDto
     public function __construct(
         public readonly int $id,
         public readonly ClientDto $client,
-        public readonly string $endDate,
+        public readonly \DateTimeImmutable $endDate,
         public readonly ImageDto $image,
     ) {
     }

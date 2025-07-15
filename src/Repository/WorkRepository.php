@@ -61,6 +61,40 @@ class WorkRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return array<int, array{
+     * work_id: int,
+     * display_name: string,
+     * end_date: \DateTimeImmutable,
+     * image_url: string,
+     * image_alt: string}>
+     */
+    public function findAllWorks(): array
+    {
+
+        $qb = $this->createQueryBuilder('w')
+        ->select('w.id AS work_id')
+        ->addSelect("COALESCE(c.companyName, CONCAT(c.firstname, ' ', c.lastname)) AS display_name")
+        ->addSelect('w.endDate AS end_date')
+        ->addSelect('MIN(i.url) AS image_url')
+        ->addSelect('MIN(i.alt) AS image_alt')
+        ->join('w.client', 'c')
+        ->leftJoin('w.illustrations', 'i')
+        ->where('i.usageType = :usage')
+        ->andWhere('w.endDate IS NOT NULL')
+        ->setParameter('usage', ImageUsage::WORK)
+        ->groupBy('w.id, w.endDate, c.companyName, c.firstname, c.lastname')
+        ->orderBy('w.endDate', 'DESC')
+        ;
+
+        /** @var array<int, array{work_id: int, display_name: string, end_date: \DateTimeImmutable, image_url: string, image_alt: string}> */
+        $result = $qb->getQuery()->getArrayResult();
+
+        return $result;
+    }
+
     //    /**
     //     * @return Work[] Returns an array of Work objects
     //     */
