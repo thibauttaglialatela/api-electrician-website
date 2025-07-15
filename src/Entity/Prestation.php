@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Repository\PrestationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation
@@ -15,19 +14,15 @@ class Prestation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('prestations:list')]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups('prestations:list')]
     private string $name;
 
     #[ORM\Column]
-    #[Groups('prestations:list')]
     private int $price;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups('prestations:detail')]
     private string $description;
 
     #[ORM\Column]
@@ -35,7 +30,6 @@ class Prestation
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'], inversedBy: 'prestation')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[Groups('prestations:list')]
     private Image $image;
 
     public function __construct()

@@ -93,7 +93,6 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 
 ```json
 {
-  "id": 1,
   "name": "Mise en conformité",
   "tarif": 120,
   "description": "Contrôle complet selon la norme NFC 15-100...",
