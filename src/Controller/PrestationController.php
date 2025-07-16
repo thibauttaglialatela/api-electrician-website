@@ -8,6 +8,7 @@ use App\Dto\ImageDto;
 use App\Dto\Prestation\PrestationDetailDto;
 use App\Dto\Prestation\PrestationDto;
 use App\Entity\Prestation;
+use App\Exception\NotFoundApiException;
 use App\Repository\PrestationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,7 +53,7 @@ final class PrestationController extends AbstractController
     public function getOnePrestation(?Prestation $prestation, SerializerInterface $serializer): JsonResponse
     {
         if (null === $prestation) {
-            return $this->json(['error' => 'Cette prestation n\' existe pas'], JsonResponse::HTTP_NOT_FOUND);
+            throw new NotFoundApiException('Prestation');
         }
 
         $image = $prestation->getImage();
