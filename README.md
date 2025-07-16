@@ -43,6 +43,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 | GET     | `/api/prestations`           | Liste des prestations                    |
 | GET     | `/api/prestations/:id`       | Détail d'une prestation                  |
 | GET     | `/api/works?limit=3&sort=end_date`         | Derniers chantiers                       |
+| GET  | `/api/works`  | Tous les chantiers |
 | GET     | `/api/works/:id`             | Détail d’un chantier                     |
 | GET     | `/api/certifications`        | Liste des certifications valides        |
 | GET     | `/api/partners`              | Logos + liens des partenaires           |
@@ -126,14 +127,14 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ]
 ```
 
-### 📦 Chantiers – GET /api/works?limit=3&sort=end_date
+### 📦 Chantiers – GET /api/works/latest?limit=3&sort=end_date
 
 ```json
 [
   {
     "id": 15,
     "client": { "display_name": "Société ÉlecPlus" },
-    "end_date": "2024-05-10",
+    "end_date": "2024-05-10T00:00:00+00:00",
     "image": {
       "url": "/uploads/chantier15/photo.jpg",
       "alt": "Remplacement armoire électrique"
@@ -142,7 +143,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
   {
     "id": 12,
     "client": { "display_name": "Alice Martin" },
-    "end_date": "2024-06-01",
+    "end_date": "2024-06-01T00:00:00+00:00",
     "image": {
       "url": "/uploads/chantier12/photo.jpg",
       "alt": "Rénovation cuisine terminée"
@@ -162,7 +163,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
     "lastname": "Doe"
   },
   "description": "Décrire le chantier...",
-  "start_date": "2024-06-01",
+  "start_date": "2024-06-01T00:00:00+00:00",
   "end_date": null,
   "duration_days": null,
   "images": [
@@ -183,8 +184,8 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
     "raison_sociale": "ElecPro Services"
   },
   "description": "Rénovation complète des installations électriques d’un local commercial.",
-  "start_date": "2024-05-01",
-  "end_date": "2024-05-15",
+  "start_date": "2024-05-01T00:00:00+00:00",
+  "end_date": "2024-05-15T00:00:00+00:00",
   "duration_days": 14,
   "images": [
     {
