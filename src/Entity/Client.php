@@ -23,7 +23,7 @@ class Client
     private ?string $companyName = null;
 
     #[ORM\Column(nullable: true, enumType: Salutation::class)]
-    private ?Salutation $Salutation = null;
+    private ?Salutation $salutation = null;
 
     #[ORM\Column(length: 50)]
     private string $firstname;
@@ -83,12 +83,12 @@ class Client
 
     public function getSalutation(): ?Salutation
     {
-        return $this->Salutation;
+        return $this->salutation;
     }
 
-    public function setSalutation(?Salutation $Salutation): static
+    public function setSalutation(?Salutation $salutation): static
     {
-        $this->Salutation = $Salutation;
+        $this->salutation = $salutation;
 
         return $this;
     }
