@@ -142,7 +142,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
   },
   {
     "id": 12,
-    "client": { "display_name": "Alice Martin" },
+    "client": { "display_name": "Mme Alice Martin" },
     "end_date": "2024-06-01T00:00:00+00:00",
     "image": {
       "url": "/uploads/chantier12/photo.jpg",
@@ -157,15 +157,11 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ```json
 {
   "id": 15,
-  "client": {
-    "civilité": "M.",
-    "firstname": "John",
-    "lastname": "Doe"
-  },
+  "client": { "display_name": "Mme Alice Martin" },
   "description": "Décrire le chantier...",
   "start_date": "2024-06-01T00:00:00+00:00",
   "end_date": null,
-  "duration_days": null,
+  "duration_in_days": null,
   "images": [
     {
       "url": "/uploads/chantiers/19/avant.jpg",
@@ -180,13 +176,11 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ```json
 {
   "id": 18,
-  "client": {
-    "raison_sociale": "ElecPro Services"
-  },
+  "client": { "display_name": "Société ÉlecPlus" },
   "description": "Rénovation complète des installations électriques d’un local commercial.",
   "start_date": "2024-05-01T00:00:00+00:00",
   "end_date": "2024-05-15T00:00:00+00:00",
-  "duration_days": 14,
+  "duration_in_days": 14,
   "images": [
     {
       "url": "/uploads/chantiers/18/photo1.jpg",

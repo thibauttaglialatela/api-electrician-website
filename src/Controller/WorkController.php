@@ -6,7 +6,10 @@ namespace App\Controller;
 
 use App\Dto\ClientDto;
 use App\Dto\ImageDto;
+use App\Dto\Work\DetailWorkDto;
 use App\Dto\Work\LastWorkListDto;
+use App\Exception\NotFoundApiException;
+use App\Repository\ImageRepository;
 use App\Repository\WorkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -63,5 +66,40 @@ final class WorkController extends AbstractController
 
 
         return $this->json($dto);
+    }
+
+    #[Route('/{workId}', name: 'show', methods: ['GET'])]
+    public function findOneWork(WorkRepository $workRepository, ImageRepository $imageRepository, int $workId): JsonResponse
+    {
+        $results = $workRepository->findWorkById($workId);
+
+
+        if ([] === $results) {
+            throw new NotFoundApiException('chantier');
+        }
+
+        if (($results[0]['endDate'] < $results[0]['startDate']) || null === $results[0]['endDate']) {
+            $durationDays = 0;
+        } else {
+            $durationDays = (int) date_diff($results[0]['startDate'], $results[0]['endDate'])->days;
+        }
+
+        $images = [];
+        foreach ($results as $key => $work) {
+            $imageDto = new ImageDto($work['image_url'], $work['image_alt']);
+            array_push($images, $imageDto);
+        }
+
+        $jsonWorkDetail = new DetailWorkDto(
+            $results[0]['work_id'],
+            new ClientDto($results[0]['display_name']),
+            $results[0]['description'],
+            $results[0]['startDate'],
+            $results[0]['endDate'],
+            $durationDays,
+            $images
+        );
+
+        return $this->json($jsonWorkDetail);
     }
 }
