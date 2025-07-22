@@ -42,7 +42,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 |---------|-------------------------------|-----------------------------------------|
 | GET     | `/api/prestations`           | Liste des prestations                    |
 | GET     | `/api/prestations/:id`       | Détail d'une prestation                  |
-| GET     | `/api/works?limit=3&sort=end_date`         | Derniers chantiers                       |
+| GET     | `/api/works/latest?limit=3&sort=end_date`         | Derniers chantiers                       |
 | GET  | `/api/works`  | Tous les chantiers |
 | GET     | `/api/works/:id`             | Détail d’un chantier                     |
 | GET     | `/api/certifications`        | Liste des certifications valides        |
