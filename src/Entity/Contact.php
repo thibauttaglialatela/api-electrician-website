@@ -8,6 +8,7 @@ use App\Enum\SubjectMessage;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -18,21 +19,32 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, maxMessage: 'Your lastname cannot be longer than {{ limit }} characters')]
     private string $lastname;
 
     #[ORM\Column(length: 250)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email')]
     private string $email;
 
     #[ORM\Column(enumType: SubjectMessage::class)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
     private SubjectMessage $subject = SubjectMessage::INFOS;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
     private string $message;
 
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column]
+    #[Assert\IsTrue(message: 'Please accept the policies')]
     private bool $hasAcceptedPolicies = false;
 
     public function __construct()
