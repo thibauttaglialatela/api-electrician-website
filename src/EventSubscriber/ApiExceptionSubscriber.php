@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Exception\ValidationException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -23,23 +25,44 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        $response = match (true) {
-            $exception instanceof NotFoundHttpException => new JsonResponse([
-                'status'  => 'error',
-                'message' => $exception->getMessage(),
-            ], JsonResponse::HTTP_NOT_FOUND),
+        if ($exception instanceof ValidationException) {
+            $violations = [];
 
-            $exception instanceof HttpExceptionInterface => new JsonResponse([
-                'status'  => 'error',
-                'message' => $exception->getMessage(),
-            ], $exception->getStatusCode()),
+            foreach ($exception->getViolations() as $violation) {
+                $violations[] = [
+                    'field'   => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
 
-            default => new JsonResponse([
-                'status'  => 'error',
-                'message' => 'Une erreur interne est survenue',
-            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR),
+            $event->setResponse(new JsonResponse([
+                'status'     => 422,
+                'error'      => 'Validation failed',
+                'violations' => $violations,
+            ], 422));
+
+            return;
+        }
+
+        $statusCode = match(true) {
+            $exception instanceof BadRequestHttpException => JsonResponse::HTTP_BAD_REQUEST,
+            $exception instanceof NotFoundHttpException   => JsonResponse::HTTP_NOT_FOUND,
+            $exception instanceof HttpExceptionInterface  => $exception->getStatusCode(),
+            default                                       => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
         };
 
-        $event->setResponse($response);
+        $errorLabel = match($statusCode) {
+            400     => 'Bad request',
+            404     => 'Not found',
+            403     => 'Forbidden',
+            401     => 'Unauthorized',
+            default => 'Internal server error',
+        };
+
+        $event->setResponse(new JsonResponse([
+            'status'  => $statusCode,
+            'error'   => $errorLabel,
+            'message' => $exception->getMessage() ?: 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.',
+        ], $statusCode));
     }
 }

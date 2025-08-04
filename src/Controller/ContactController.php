@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -26,18 +27,13 @@ final class ContactController extends AbstractController
         try {
             $contact = $serializer->deserialize($json, Contact::class, 'json');
         } catch (\Throwable $e) {
-            return throw new BadRequestException('Données invalides ou mal formées');
+            return throw new BadRequestException('Requête mal formée.');
         }
 
         // validation des données
         $errors = $validator->validate($contact);
         if (\count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[$error->getPropertyPath()] = $error->getMessage();
-            }
-
-            return $this->json(['errors' => $errorMessages], 422);
+            throw new ValidationException($errors);
         }
 
         $em->persist($contact);
