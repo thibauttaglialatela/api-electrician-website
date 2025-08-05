@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\CertificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CertificationRepository::class)]
 class Certification
@@ -13,19 +14,24 @@ class Certification
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getCertifications'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['getCertifications'])]
     private string $name;
 
     #[ORM\Column]
+    #[Groups(['getCertifications'])]
     private \DateTimeImmutable $issuedAt;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['getCertifications'])]
     private ?\DateTimeImmutable $expiresAt = null;
 
     #[ORM\OneToOne(inversedBy: 'certification', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['getCertifications'])]
     private Image $image;
 
     public function getId(): ?int
