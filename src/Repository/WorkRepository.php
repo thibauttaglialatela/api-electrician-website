@@ -95,6 +95,60 @@ class WorkRepository extends ServiceEntityRepository
         return $result;
     }
 
+    /**
+     * Undocumented function.
+     *
+     *@return array{
+     * data: array<int, array{
+     * work_id: int,
+     * display_name: string,
+     * end_date: \DateTimeImmutable,
+     * image_url: string,
+     * image_alt: string
+     * }>,
+     * total: int,
+     * page: int,
+     * limit: int
+     * }
+     */
+    public function paginateWorks(int $page = 1, int $limit = 3): array
+    {
+
+        $qb = $this->createQueryBuilder('w')
+        ->select('w.id AS work_id')
+        ->addSelect("COALESCE(c.companyName, CONCAT(c.firstname, ' ', c.lastname)) AS display_name")
+                ->addSelect('w.endDate AS end_date')
+        ->addSelect('MIN(i.url) AS image_url')
+        ->addSelect('MIN(i.alt) AS image_alt')
+        ->join('w.client', 'c')
+        ->leftJoin('w.illustrations', 'i')
+                ->where('i.usageType = :usage')
+        ->andWhere('w.endDate IS NOT NULL')
+        ->setParameter('usage', ImageUsage::WORK)
+                ->groupBy('w.id, w.endDate, c.companyName, c.firstname, c.lastname')
+        ->orderBy('w.endDate', 'DESC')
+        ->setFirstResult(($page - 1) * $limit)
+        ->setMaxResults($limit)
+        ;
+
+        /** @var array<int, array{work_id: int, display_name: string, end_date: \DateTimeImmutable, image_url: string, image_alt: string}> */
+        $data = $qb->getQuery()->getArrayResult();
+
+        // Compter le nombre total de résultat
+        $countQb = $this->createQueryBuilder('w')
+        ->select('COUNT(w.id)')
+        ->where('w.endDate IS NOT NULL');
+
+        $total = (int) $countQb->getQuery()->getSingleScalarResult();
+
+        return [
+            'data'  => $data,
+            'total' => $total,
+            'page'  => $page,
+            'limit' => $limit,
+        ];
+    }
+
     /*     SELECT w.id, w.description, w.start_date, w.end_date,
     COALESCE(client.company_name, CONCAT(client.salutation, ' ', client.firstname, ' ', client.lastname)) AS display_name, image.url AS image_url, image.alt AS image_alt
              FROM work w
