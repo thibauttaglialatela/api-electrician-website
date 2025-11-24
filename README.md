@@ -42,8 +42,9 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 |---------|-------------------------------|-----------------------------------------|
 | GET     | `/api/prestations`           | Liste des prestations                    |
 | GET     | `/api/prestations/:id`       | Détail d'une prestation                  |
-| GET     | `/api/works/latest?limit=3&sort=end_date`         | Derniers chantiers                       |
+| GET     | `/api/works/latest?limit=3&sort=end_date`| Derniers chantiers                       |
 | GET  | `/api/works`  | Tous les chantiers |
+| GET     | `/api/works/list?page=1&limit=3` | Affiche les chantiers terminés page par page |
 | GET     | `/api/works/:id`             | Détail d’un chantier                     |
 | GET     | `/api/certifications`        | Liste des certifications valides        |
 | GET     | `/api/partners`              | Logos + liens des partenaires           |
@@ -150,6 +151,51 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
     }
   }
 ]
+```
+
+### 📦 Chantiers (avec la pagination) – GET /api/works/list?page=1&limit=3
+
+```json
+{
+  "page": 1,
+  "limit": 3,
+  "total": 10,
+  "items": [
+    {
+      "id": 19,
+      "client": {
+        "displayName": "Caroline Loiseau"
+      },
+      "endDate": "2025-08-28T00:00:00+00:00",
+      "image": {
+        "url": "https://picsum.photos/seed/68920768af5d2/300/200",
+        "alt": "Bovary, à trouver."
+      }
+    },
+    {
+      "id": 17,
+      "client": {
+        "displayName": "Isaac Pelletier"
+      },
+      "endDate": "2025-08-12T00:00:00+00:00",
+      "image": {
+        "url": "https://picsum.photos/seed/68920768aa847/300/200",
+        "alt": "Ah! la voici! fit."
+      }
+    },
+    {
+      "id": 13,
+      "client": {
+        "displayName": "Gabrielle Charles"
+      },
+      "endDate": "2025-08-10T00:00:00+00:00",
+      "image": {
+        "url": "https://picsum.photos/seed/689207689fef2/300/200",
+        "alt": "Domingo, le chien."
+      }
+    }
+  ]
+}
 ```
 
 ### 📦 Détail chantier (client particulier) - GET /api/works/:id
