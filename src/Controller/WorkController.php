@@ -13,6 +13,7 @@ use App\Repository\ImageRepository;
 use App\Repository\WorkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -34,6 +35,32 @@ final class WorkController extends AbstractController
         }, $works);
 
         return $this->json($jsonWorksList);
+    }
+
+    #[Route('/list', name: 'list', methods: ['GET'])]
+    public function findAllWorksAndPaginate(WorkRepository $workRepository, Request $request): JsonResponse
+    {
+
+        $page  = max(1, $request->query->getInt('page', 1));
+        $limit = max(3, $request->query->getInt('limit', 3));
+
+        $pagination = $workRepository->paginateWorks($page, $limit);
+
+        $items = array_map(function (array $row): LastWorkListDto {
+            return new LastWorkListDto(
+                $row['work_id'],
+                new ClientDto($row['display_name']),
+                $row['end_date'],
+                new ImageDto($row['image_url'], $row['image_alt'])
+            );
+        }, $pagination['data']);
+
+        return $this->json([
+            'page'  => $pagination['page'],
+            'limit' => $pagination['limit'],
+            'total' => $pagination['total'],
+            'items' => $items,
+        ]);
     }
 
     #[Route('/latest', name: 'last_works', methods: ['GET'])]
