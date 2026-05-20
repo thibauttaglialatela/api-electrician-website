@@ -11,15 +11,19 @@ final class JWTAuthenticationSuccessListener
 {
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $data     = $event->getData();
-        $response = $event->getResponse();
+        $data = $event->getData();
 
-        $token = $data['token'];
+        if (!isset($data['token'])) {
+            return;
+        }
+        $token    = $data['token'];
+        $response = $event->getResponse();
 
         $response->headers->setCookie(
             Cookie::create(
                 name: 'BEARER',
                 value: $token,
+                expire: time() + 3600,
                 path: '/',
                 secure: true,
                 httpOnly: true,

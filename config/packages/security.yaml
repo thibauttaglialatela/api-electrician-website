@@ -10,6 +10,9 @@ security:
                 class: App\Entity\User
                 property: username
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         login:
             pattern: ^/api/login
             stateless: true
@@ -21,12 +24,10 @@ security:
                 check_path: /api/token/refresh
 
         api:
-            pattern:   ^/admin/api
+            pattern:   ^/api
             stateless: true
             jwt: ~
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+
         main:
             lazy: true
             provider: app_user_provider
@@ -40,7 +41,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
+        - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
