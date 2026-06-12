@@ -10,15 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/admin/api/certifications')]
+#[Route('/api/admin/certifications')]
 final class CertificationController
 {
-    #[Route('/', methods: ['GET'])]
-    public function showAllCertifications(CertificationRepository $certificationRepository, SerializerInterface $serializer): JsonResponse
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+    ) {
+    }
+
+    #[Route('', methods: ['GET'])]
+    public function showAllCertifications(CertificationRepository $certificationRepository): JsonResponse
     {
         $certifications = $certificationRepository->findAll();
 
-        $jsonCertifications = $serializer->serialize($certifications, 'json', ['groups' => 'getCertifications']);
+        $jsonCertifications = $this->serializer->serialize($certifications, 'json', ['groups' => 'getCertifications']);
 
 
         return new JsonResponse($jsonCertifications, Response::HTTP_OK, [], true);
