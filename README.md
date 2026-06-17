@@ -30,7 +30,7 @@ Cette API permet de gérer les entités suivantes :
 
 ## 2. Authentification
 
-Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur authentifié avec le rôle `ROLE_ADMIN`.
+Les routes sous `/api/admin/...` sont protégées et nécessitent un utilisateur authentifié avec le rôle `ROLE_ADMIN`.
 
 > Les routes publiques sous `/api/...` sont librement accessibles.
 
@@ -56,11 +56,11 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 
 | Méthode | Endpoint                        | Description                            |
 |---------|---------------------------------|----------------------------------------|
-| GET     | `/admin/api/prestations`        | Liste complète                         |
-| GET     | `/admin/api/prestations/:id`    | Détail d’une prestation                |
-| POST    | `/admin/api/prestations`        | Ajouter une prestation                 |
-| PUT     | `/admin/api/prestations/:id`    | Modifier une prestation                |
-| DELETE  | `/admin/api/prestations/:id`    | Supprimer une prestation               |
+| GET     | `/api/admin/prestations`        | Liste complète                         |
+| GET     | `/api/admin/prestations/:id`    | Détail d’une prestation                |
+| POST    | `/api/admin/prestations`        | Ajouter une prestation                 |
+| PUT     | `/api/admin/prestations/:id`    | Modifier une prestation                |
+| DELETE  | `/api/admin/prestations/:id`    | Supprimer une prestation               |
 | ...     | *(Idem pour works, certifications, partners, contacts)* | |
 
 ---
@@ -266,7 +266,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 
 ## 6. Réponses JSON - Admin
 
-### 🛠 Prestations – GET /admin/api/prestations
+### 🛠 Prestations – GET /api/admin/prestations
 
 ```json
 [
@@ -284,7 +284,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ]
 ```
 
-### 🛠 Partenaires – GET /admin/api/partners
+### 🛠 Partenaires – GET /api/admin/partners
 
 ```json
 [
@@ -309,7 +309,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ]
 ```
 
-### 🛠 Contacts - GET /admin/api/contacts
+### 🛠 Contacts - GET /api/admin/contacts
 
 ```json
 [
@@ -332,7 +332,7 @@ Les routes sous `/admin/api/...` sont protégées et nécessitent un utilisateur
 ]
 ```
 
-### 🛠 Détail Contact - GET /admin/api/contacts/:id
+### 🛠 Détail Contact - GET /api/admin/contacts/:id
 
 ```json
 {
