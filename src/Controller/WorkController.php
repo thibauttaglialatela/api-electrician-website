@@ -105,10 +105,10 @@ final class WorkController extends AbstractController
             throw new NotFoundApiException('chantier');
         }
 
-        if (($results[0]['endDate'] < $results[0]['startDate']) || null === $results[0]['endDate']) {
-            $durationDays = 0;
-        } else {
-            $durationDays = (int) date_diff($results[0]['startDate'], $results[0]['endDate'])->days;
+        $durationDays = 0;
+
+        if (null !== $results[0]['endDate'] && $results[0]['endDate'] >= $results[0]['startDate']) {
+            $durationDays = (int) $results[0]['startDate']->diff($results[0]['endDate'])->days;
         }
 
         $images = [];

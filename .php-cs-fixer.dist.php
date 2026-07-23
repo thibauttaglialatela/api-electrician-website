@@ -1,7 +1,12 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')   // Répertoire à analyser (par exemple le dossier src)
+$finder = (new PhpCsFixer\Finder())
+    ->in(__DIR__)
+    ->exclude('var')
+    ->notPath([
+        'config/bundles.php',
+        'config/reference.php',
+    ])
 ;
 
 $config = new PhpCsFixer\Config();
