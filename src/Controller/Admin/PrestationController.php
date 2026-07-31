@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -84,6 +85,24 @@ final class PrestationController extends AbstractController
         }
 
 
+
+    }
+
+    #[Route('/delete/{id}', methods: ['DELETE'])]
+    public function deleteOnePrestation(?Prestation $prestation, EntityManagerInterface $entityManager): JsonResponse
+    {
+        if (!$prestation) {
+            return $this->json(['status' => 404, 'error' => 'Not found', 'message' => 'Cette prestation n\'existe pas'], 404);
+        }
+
+        try {
+            $entityManager->remove($prestation);
+            $entityManager->flush();
+
+            return $this->json(null, Response::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage(), 'message' => 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
     }
 }
