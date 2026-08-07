@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Dto\ImageDto;
+use App\Dto\Prestation\PrestationDetailDto;
 use App\Dto\Prestation\PrestationDto;
 use App\Entity\Image;
 use App\Entity\Prestation;
@@ -104,5 +105,89 @@ final class PrestationController extends AbstractController
             return $this->json(['error' => $e->getMessage(), 'message' => 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    #[Route('/{id}', methods: ['GET'])]
+    public function getOnePrestation(?Prestation $prestation): JsonResponse
+    {
+        if (!$prestation) {
+            return $this->json(['status' => 404, 'error' => 'Not found', 'message' => 'Cette prestation n\'existe pas'], 404);
+        }
+
+        $image = $prestation->getImage();
+        if (!$image) {
+            return $this->json(['status' => 404, 'error' => 'Not found', 'message' => 'L\'image de cette prestation est manquante'], 404);
+        }
+
+        $id          = $prestation->getId();
+        $name        = $prestation->getName();
+        $price       = $prestation->getPrice();
+        $description = $prestation->getDescription();
+        $url         = $image->getUrl();
+        $alt         = $image->getAlt();
+
+        if (null === $id || null === $name || null === $price || null === $description || null === $url || null === $alt) {
+            return $this->json(['status' => 500, 'error' => 'Internal Error', 'message' => 'Données de la prestation incomplètes'], 500);
+        }
+
+        $jsonPrestationDetail = new PrestationDetailDto(
+            $id,
+            $name,
+            $price,
+            $description,
+            new ImageDto($url, $alt)
+        );
+
+        return $this->json($jsonPrestationDetail);
+    }
+
+    #[Route('/edit/{id}', methods: ['PUT', 'POST'])]
+    public function editPrestation(?Prestation $prestation, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        if (!$prestation) {
+            return $this->json([
+                'status'  => 404,
+                'error'   => 'Not found',
+                'message' => 'Cette prestation n\'existe pas',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if (!\is_array($data)) {
+            return $this->json([
+                'status'  => 400,
+                'error'   => 'Bad Request',
+                'message' => 'Format JSON invalide',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (isset($data['name']) && \is_string($data['name'])) {
+            $prestation->setName($data['name']);
+        }
+
+        if (isset($data['tarif']) && (\is_int($data['tarif']) || is_numeric($data['tarif']))) {
+            $prestation->setPrice((int) $data['tarif']);
+        }
+
+        if (isset($data['description']) && \is_string($data['description'])) {
+            $prestation->setDescription($data['description']);
+        }
+
+        $image = $prestation->getImage();
+        if ($image) {
+            if (isset($data['urlImage']) && \is_string($data['urlImage'])) {
+                $image->setUrl($data['urlImage']);
+            }
+            if (isset($data['altImage']) && \is_string($data['altImage'])) {
+                $image->setAlt($data['altImage']);
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this->json([
+            'message' => 'Prestation modifiée avec succès',
+        ], Response::HTTP_OK);
     }
 }
