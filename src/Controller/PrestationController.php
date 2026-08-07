@@ -68,8 +68,14 @@ final class PrestationController extends AbstractController
         ) {
             return $this->json(['error' => 'Données incorrecte'], 422);
         }
+        $idPrestation = $prestation->getId();
+
+        if (null === $idPrestation) {
+            return $this->json(['status' => 500, 'error' => 'Internal Error', 'message' => 'Données de la prestation incomplètes'], 500);
+        }
 
         $jsonPrestationDetail = new PrestationDetailDto(
+            $idPrestation,
             $prestation->getName(),
             $prestation->getPrice(),
             $prestation->getDescription(),

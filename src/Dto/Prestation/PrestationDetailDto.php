@@ -9,6 +9,7 @@ use App\Dto\ImageDto;
 final class PrestationDetailDto
 {
     public function __construct(
+        public readonly int $id,
         public readonly string $name,
         public readonly int $tarif,
         public readonly string $description,
